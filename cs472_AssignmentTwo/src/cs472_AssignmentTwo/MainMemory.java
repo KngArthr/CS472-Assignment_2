@@ -47,7 +47,7 @@ public class MainMemory {
 		
 		for(int k = 0; k < array.length; k++) {
 			
-			fileWriter.write("Slot " + Integer.toHexString(k) + ": "+ array[k]);
+			fileWriter.write("Slot " + Integer.toHexString(k) + ": "+ Integer.toHexString(array[k]));
 			fileWriter.write(System.getProperty("line.separator"));
 			
 			System.out.println("Slot " + Integer.toHexString(k) + ": "+ Integer.toHexString(array[k]));

@@ -22,12 +22,18 @@ public class Driver {
 	public void doIt() throws IOException {
 		
 		
-		//MainMemory mainMemory = new MainMemory();
+	    MainMemory mainMemory = new MainMemory();
+	    
+	    Instructions instructions = new Instructions("inputInstructions");
+	    
+	    instructions.readFile("inputInstructions");
+	    
+	    
 		
-		CacheObject cacheObject = new CacheObject();
+		//CacheObject cacheObject = new CacheObject();
 		
-		cacheObject.displayCache();
-		cacheObject.writeToFile();
+		//cacheObject.displayCache();
+		//cacheObject.writeToFile();
 		
 		
 		
