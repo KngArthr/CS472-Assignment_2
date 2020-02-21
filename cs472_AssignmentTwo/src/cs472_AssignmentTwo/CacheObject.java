@@ -8,21 +8,25 @@ public class CacheObject {
 	
 	
 	private int[] validBit;
+	private int[] dirtyBit;
 	private int[] tagAddress;
 	private short[][] dataBlock;
 	private int[] cacheSlot;
 	
 	
 	
+	
 	public CacheObject() {
 		
 		validBit = new int[16];
+		dirtyBit = new int[16];
 		tagAddress = new int[16];
 		dataBlock = new short [16][16];
 		cacheSlot = new int [16];
 		
 		for(int i = 0; i < cacheSlot.length; i++) {
 			validBit[i] = 0;
+			dirtyBit[i] = 0;
 			tagAddress[i] = 0;
 			cacheSlot[i] = i;
 			for(int j = 0; j < dataBlock.length; j++) {
@@ -43,23 +47,39 @@ public class CacheObject {
 		return false;
 	}
 	
+	public boolean isDirty(int slot) {
+		
+		if(getDirtyBit()[slot] > 0) {
+			return true;
+		}
+		
+		return false;
+	}
 	
 	
+
+
 	public void displayCache() {
 		
 		
-		System.out.println(String.format("%-5s %-5s %-5s %-5s \r\n", "Slot", "Valid", "Tag", "\tData"));
+		System.out.println(String.format("%-5s %-5s %-5s %-5s %-5s \r\n", "Slot", "Valid", "Dirty", "Tag", "\tData"));
 			
 		
 		for(int i = 0; i < getCacheSlot().length; i++) {
 			
-			System.out.print(String.format("%-5x %-5x %-5x", getCacheSlot()[i], getValidBit()[i], getTagAddress()[i]));
+			System.out.print(String.format("%-5x %-5x %-5x %-5x", getCacheSlot()[i], getValidBit()[i], getDirtyBit()[i], getTagAddress()[i]));
 			
 			
 			for(int j = 0; j < dataBlock.length; j++) {
 				
+				if(j==0) {
+					System.out.print(String.format("\t\t%-5x", getDataBlock()[i][j]));
+					
+				}else{
+					System.out.print(String.format("%-5x", getDataBlock()[i][j]));
+
+				}
 				
-				System.out.print(String.format("\t%-5x", getDataBlock()[i][j]));
 
 			}
 			System.out.print(String.format("\r\n", ""));
@@ -68,21 +88,30 @@ public class CacheObject {
 	
 		
 	}
-	public void writeToFile() throws IOException {
-		File file = new File("C:\\Users\\kazim\\OneDrive\\Documents\\BU MET\\Spring 2020\\CS472\\Project 2\\Test\\testFile.txt");
+	public void writeToFile(String fileName) throws IOException {
+		File file = new File(fileName);
 		
 		FileWriter fileWriter = new FileWriter(file); 
 		
-		fileWriter.write(String.format("%-5s %-5s %-5s %-5s \r\n", "Slot", "Valid", "Tag", "\tData"));
+		fileWriter.write(String.format("%-5s %-5s %-5s %-5s %-5s \r\n", "Slot", "Valid", "Dirty", "Tag", "\tData"));
 
 		
 		for(int i = 0; i < getCacheSlot().length; i++) {
 					
-					fileWriter.write(String.format("%-5x %-5x %-5x", getCacheSlot()[i], getValidBit()[i], getTagAddress()[i]));			
+					fileWriter.write(String.format("%-5x %-5x %-5x %-5x", getCacheSlot()[i], getValidBit()[i], getDirtyBit()[i], getTagAddress()[i]));			
 					
 					for(int j = 0; j < dataBlock.length; j++) {
 						
-						fileWriter.write(String.format("\t%-5x", getDataBlock()[i][j]));			
+						if(j==0) {
+							fileWriter.write(String.format("\t\t%-5x", getDataBlock()[i][j]));	
+							
+						}else{
+							fileWriter.write(String.format("%-5x", getDataBlock()[i][j]));	
+
+						}
+						
+						
+		
 		
 					}
 					fileWriter.write(String.format("\r\n", ""));	
@@ -102,6 +131,14 @@ public class CacheObject {
 
 	public void setValidBit(int[] validBit) {
 		this.validBit = validBit;
+	}
+	
+	public int[] getDirtyBit() {
+		return dirtyBit;
+	}
+
+	public void setDirtyBit(int[] dirtyBit) {
+		this.dirtyBit = dirtyBit;
 	}
 
 	public int[] getTagAddress() {

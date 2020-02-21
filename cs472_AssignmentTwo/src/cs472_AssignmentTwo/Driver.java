@@ -26,18 +26,18 @@ public class Driver {
 	    
 	    Instructions instructions = new Instructions("inputInstructions");
 	    
-	    instructions.readFile("inputInstructions");
+	    CacheObject cacheObject = new CacheObject();
 	    
 	    
-		
-		//CacheObject cacheObject = new CacheObject();
+	    //instructions.printInstructions();
+	    
+	    //mainMemory.printMainMemory();
 		
 		//cacheObject.displayCache();
-		//cacheObject.writeToFile();
 		
-		
-		
-		
+		cacheObject.writeToFile("cache");
+	    
+	    mainMemory.writeToFile("mainMem");		
 		
 		
 	}

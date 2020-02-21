@@ -7,25 +7,24 @@ public class Instructions {
 	
 	
 	
-	short[] instructions;
+	ArrayList<Object> instructions;
+	
+	
 
 
 
-	public Instructions(String inputFile) {
+	public Instructions(String fileName) {
 		
-		this.instructions = new short[100];
 		
-
-				
-		
+		this.instructions = readFile(fileName);
 		
 	}
 	
 	
 	
-	public ArrayList<Short> readFile(String inputFile){
+	public ArrayList<Object> readFile(String inputFile){
 		
-		ArrayList<Short> data = new ArrayList<Short>();
+		ArrayList<Object> data = new ArrayList<Object>();
 		String textData;
 		Scanner scanner;
 		int counter = 0;
@@ -35,10 +34,20 @@ public class Instructions {
 			scanner = new Scanner(file);
 			
 			while (scanner.hasNextLine()) {
-				textData = scanner.nextLine();
-				data.add(Short.parseShort(textData));
 				
-				System.out.println(data);
+				textData = scanner.nextLine();
+
+				
+				data.add(textData);
+
+				/*if(isCommand(textData)) {
+					data.add(textData);
+				}else {
+					data.add(textData);
+				}*/
+				
+				
+				//System.out.println(data.get(counter));
 	
 				counter++;
 				
@@ -55,19 +64,41 @@ public class Instructions {
 		
 	}
 	
+	public void printInstructions() {
+				
+		for(int i = 0; i < getInstructions().size(); i++) {
+			
+			System.out.println(getInstructions().get(i));
+
+			
+		}
+	}
 	
-	
+	public boolean isCommand(String inputLine){
+		
+		if(inputLine.equals("R")||inputLine.equals("D")||inputLine.equals("W")) {
+			return true;
+		}
+		
+		
+		return false;
+	}
 
 
-	public short[] getInstructions() {
+
+	public ArrayList<Object> getInstructions() {
 		return instructions;
 	}
 
 
 
-	public void setInstructions(short[] instructions) {
+	public void setInstructions(ArrayList<Object> instructions) {
 		this.instructions = instructions;
 	}
+	
+
+
+
 
 
 	
