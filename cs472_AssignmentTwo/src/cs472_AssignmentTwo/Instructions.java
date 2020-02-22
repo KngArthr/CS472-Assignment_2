@@ -10,7 +10,9 @@ public class Instructions {
 	private ArrayList<Object> initialInstructions;
 	
 	private ArrayList<String> requests;
-	private ArrayList<Short> instruction;
+	private ArrayList<Short> address;
+	private ArrayList<Short> theData;
+
 	
 	private int[] blockOffset;
 	private int[] tag;
@@ -27,18 +29,25 @@ public class Instructions {
 		this.initialInstructions = readFile(fileName);
 
 		this.requests = new ArrayList<String>();
-		this.instruction = new ArrayList<Short>();
+		this.address = new ArrayList<Short>();
+		this.theData =  new ArrayList<Short>();
 		
 		
 	    seperateInitialInstructions(getInitialInstructions());
 	    
 	    
-		this.blockOffset = new int[getInstruction().size()];
-		this.tag = new int[getInstruction().size()];
-		this.slotNumber = new int[getInstruction().size()];
-		this.blockBeginAddress = new int[getInstruction().size()];
+		this.blockOffset = new int[getAddress().size()];
+		this.tag = new int[getAddress().size()];
+		this.slotNumber = new int[getAddress().size()];
+		this.blockBeginAddress = new int[getAddress().size()];
 
 		seperateChunks();
+		try {
+			writeToFile("seperatedInstructions");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		
 		
@@ -46,21 +55,21 @@ public class Instructions {
 	
 	public void seperateChunks() {
 		
-		for(int i = 0; i < getInstruction().size(); i++) {
+		for(int i = 0; i < getAddress().size(); i++) {
 			
-			blockOffset[i] = (getInstruction().get(i) & 0x00F);
-			slotNumber[i] = (getInstruction().get(i) & 0x0F0) >>> 4;
-			tag[i] = (getInstruction().get(i)) >>> 8;
-			blockBeginAddress[i] = (getInstruction().get(i) & 0xFF0);
+			blockOffset[i] = (getAddress().get(i) & 0x00F);
+			slotNumber[i] = (getAddress().get(i) & 0x0F0) >>> 4;
+			tag[i] = (getAddress().get(i)) >>> 8;
+			blockBeginAddress[i] = (getAddress().get(i) & 0xFF0);
 			
 		}
 		
 		/*ystem.out.println(String.format("%-15s %-15s %-15s %-15s %-15s \r\n", "Instruction", "Tag", "Slot", "Block Offset", "Block Begin"));
 			
 		
-		for(int i = 0; i < getInstruction().size(); i++) {
+		for(int i = 0; i < getAddress().size(); i++) {
 			
-			System.out.print(String.format("%-15s %-15s %-15s %-15s %-15s \r\n", Integer.toHexString(getInstruction().get(i)), Integer.toHexString(tag[i]), Integer.toHexString(slotNumber[i]), Integer.toHexString(blockOffset[i]), Integer.toHexString(blockBeginAddress[i])));
+			System.out.print(String.format("%-15s %-15s %-15s %-15s %-15s \r\n", Integer.toHexString(getAddress().get(i)), Integer.toHexString(tag[i]), Integer.toHexString(slotNumber[i]), Integer.toHexString(blockOffset[i]), Integer.toHexString(blockBeginAddress[i])));
 			
 			
 				
@@ -74,26 +83,39 @@ public class Instructions {
 	public void seperateInitialInstructions(ArrayList<Object> initialInstructions) {
 		
 		ArrayList<String> requests = new ArrayList<String>();
-		ArrayList<Short> instruction = new ArrayList<Short>();
+		ArrayList<Short> address = new ArrayList<Short>();
+		ArrayList<Short> theData = new ArrayList<Short>();
 
-		
-		
+
 		for(int i = 0; i < initialInstructions.size(); i++) {
 			
-			if(isRequest(initialInstructions.get(i))) {
+			if(initialInstructions.get(i).equals("R")) {
 				requests.add((String.valueOf(initialInstructions.get(i))));
+				address.add(Short.parseShort((String) initialInstructions.get(i+1), 16));
+				theData.add(Short.parseShort((String) "0", 16));
+				i++;
 				
-			}else {
-				instruction.add(Short.parseShort((String) initialInstructions.get(i), 16));
+			}else if(initialInstructions.get(i).equals("W")){
+				requests.add((String.valueOf(initialInstructions.get(i))));
+				address.add(Short.parseShort((String) initialInstructions.get(i+1), 16));
+				theData.add(Short.parseShort((String) initialInstructions.get(i+2), 16));
+				i+=2;
 				
+			}else if(initialInstructions.get(i).equals("D")){
+				requests.add((String.valueOf(initialInstructions.get(i))));
+				address.add(Short.parseShort((String) "0", 16));
+				theData.add(Short.parseShort((String) "0", 16));
 				
 			}
 			
+	
+
+			
 		}
-		
 		setRequests(requests);
-		setInstruction(instruction);
 		
+		setAddress(address);
+		setTheData(theData);
 	   /* System.out.println("Requests");
 		for(int i = 0; i < getRequests().size(); i++) {
 			
@@ -103,15 +125,71 @@ public class Instructions {
 		}
 		
 		System.out.println("Instructions");
-		for(int i = 0; i < getInstruction().size(); i++) {
+		for(int i = 0; i < getAddress().size(); i++) {
 			
-			System.out.println(getInstruction().get(i));
+			System.out.println(getAddress().get(i));
 
 			
 		}*/
 	    
 		
 
+		
+	}
+	
+	public void writeToFile(String fileName) throws IOException {
+		
+		File file = new File(fileName);
+		
+		FileWriter fileWriter = new FileWriter(file); 
+		
+		fileWriter.write(String.format("%-15s %-15s %-15s %-15s %-15s %-15s %-15s \r\n", "Request", "Address", "What Data?", "Tag", "Slot", "Block Offset", "Block Begin"));
+			
+		fileWriter.write(System.getProperty("line.separator"));
+		
+		int j = 0;
+		for(int i = 0; i < getAddress().size(); i++) {
+			//System.out.println(i);
+			if(getRequests().get(i).equals("R")) {
+				fileWriter.write(String.format("%-15s %-15s %-15s %-15s %-15s %-15s %-15s \r\n", getRequests().get(i), Integer.toHexString(getAddress().get(i)), Integer.toHexString(getTheData().get(i)), Integer.toHexString(tag[i]), Integer.toHexString(slotNumber[i]), Integer.toHexString(blockOffset[i]), Integer.toHexString(blockBeginAddress[i])));
+				//fileWriter.write(System.getProperty("line.separator"));
+				/*System.out.println(getRequests().get(i));
+				System.out.println(Integer.toHexString(getAddress().get(i)));
+
+				System.out.println(Integer.toHexString(getTheData().get(i)));
+
+				System.out.println(Integer.toHexString(tag[i]));
+				System.out.println(Integer.toHexString(slotNumber[i]));
+
+				System.out.println(Integer.toHexString(blockOffset[i]));
+
+				System.out.println(Integer.toHexString(blockBeginAddress[i]));*/
+
+				
+				
+			}else if(getRequests().get(i).equals("W")) {
+				
+				fileWriter.write(String.format("%-15s %-15s %-15s %-15s %-15s %-15s %-15s \r\n", getRequests().get(i), Integer.toHexString(getAddress().get(i)), Integer.toHexString(getTheData().get(i)), Integer.toHexString(tag[i]), Integer.toHexString(slotNumber[i]), Integer.toHexString(blockOffset[i]), Integer.toHexString(blockBeginAddress[i])));
+				//fileWriter.write(System.getProperty("line.separator"));
+				
+				
+			}else if(getRequests().get(i).equals("D")) {
+				fileWriter.write(String.format("%-15s %-15s %-15s %-15s %-15s %-15s %-15s \r\n", getRequests().get(i), Integer.toHexString(getAddress().get(i)), Integer.toHexString(getTheData().get(i)), Integer.toHexString(tag[i]), Integer.toHexString(slotNumber[i]), Integer.toHexString(blockOffset[i]), Integer.toHexString(blockBeginAddress[i])));
+				//fileWriter.write(System.getProperty("line.separator"));
+				
+				
+			}
+			
+
+
+			
+				
+		}
+		
+
+				
+		fileWriter.flush();
+		fileWriter.close();
 		
 	}
 	
@@ -207,17 +285,25 @@ public class Instructions {
 
 
 
-	public ArrayList<Short> getInstruction() {
-		return instruction;
+	public ArrayList<Short> getAddress() {
+		return address;
 	}
 
 
 
-	public void setInstruction(ArrayList<Short> instruction) {
-		this.instruction = instruction;
+	public void setAddress(ArrayList<Short> address) {
+		this.address = address;
 	}
 
 
+
+	public ArrayList<Short> getTheData() {
+		return theData;
+	}
+
+	public void setTheData(ArrayList<Short> theData) {
+		this.theData = theData;
+	}
 
 	public int[] getBlockOffset() {
 		return blockOffset;

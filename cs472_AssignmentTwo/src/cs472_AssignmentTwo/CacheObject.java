@@ -154,7 +154,7 @@ public class CacheObject {
 		return validBit[slot];
 	}
 	
-	public void setSlotValidBit(int slot, short input) {
+	public void setSlotValidBit(int slot, int input) {
 		this.validBit[slot] = input;
 		
 	}
@@ -171,7 +171,7 @@ public class CacheObject {
 		return dirtyBit[slot];
 	}
 	
-	public void setSlotDirtyBit(int slot, short input) {
+	public void setSlotDirtyBit(int slot, int input) {
 		this.dirtyBit[slot] = input;
 		
 	}
@@ -188,7 +188,7 @@ public class CacheObject {
 		return tagAddress[slot];
 	}
 	
-	public void setSlotTagAddress(int slot, short input) {
+	public void setSlotTagAddress(int slot, int input) {
 		this.tagAddress[slot] = input;
 		
 	}
@@ -201,11 +201,11 @@ public class CacheObject {
 		this.dataBlock = dataBlock;
 	}
 	
-	public int getDataBlock(int row, int column) {
+	public short getSlotDataBlock(int row, int column) {
 		return dataBlock[row][column];
 	}
 	
-	public void setDataBlock(int row, int column, short input) {
+	public void setSlotDataBlock(int row, int column, short input) {
 		this.dataBlock[row][column] = input;
 		
 	}
@@ -222,7 +222,7 @@ public class CacheObject {
 		return cacheSlot[slot];
 	}
 	
-	public void setSlotcacheSlot(int slot, short input) {
+	public void setSlotcacheSlot(int slot, int input) {
 		this.cacheSlot[slot] = input;
 		
 	}

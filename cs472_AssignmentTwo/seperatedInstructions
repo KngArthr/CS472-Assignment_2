@@ -1,0 +1,26 @@
+Request         Address         What Data?      Tag             Slot            Block Offset    Block Begin     
+
+R               5               0               0               0               5               0               
+R               6               0               0               0               6               0               
+R               7               0               0               0               7               0               
+R               14c             0               1               4               c               140             
+R               14d             0               1               4               d               140             
+R               14e             0               1               4               e               140             
+R               14f             0               1               4               f               140             
+R               150             0               1               5               0               150             
+R               151             0               1               5               1               150             
+R               3a6             0               3               a               6               3a0             
+R               4c3             0               4               c               3               4c0             
+D               0               0               0               0               0               0               
+W               14c             99              1               4               c               140             
+W               63b             7               6               3               b               630             
+R               582             0               5               8               2               580             
+D               0               0               0               0               0               0               
+R               348             0               3               4               8               340             
+R               3f              0               0               3               f               30              
+D               0               0               0               0               0               0               
+R               14b             0               1               4               b               140             
+R               14c             0               1               4               c               140             
+R               63f             0               6               3               f               630             
+R               83              0               0               8               3               80              
+D               0               0               0               0               0               0               
