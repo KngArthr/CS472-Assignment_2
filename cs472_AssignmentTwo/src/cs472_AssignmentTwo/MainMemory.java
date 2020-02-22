@@ -69,10 +69,19 @@ public class MainMemory {
 	public short[] getMainMemory() {
 		return mainMemory;
 	}
+	
+	public short getSlotMainMemory(int slot) {
+		return mainMemory[slot];
+	}
 
 
 	public void setMainMemory(short[] mainMemory) {
 		this.mainMemory = mainMemory;
+	}
+	
+	public void setSlotMainMemory(int slot, short input) {
+		this.mainMemory[slot] = input;
+		
 	}
 
 }

@@ -38,27 +38,8 @@ public class CacheObject {
 		
 	}
 	
-	public boolean isValid(int slot) {
-		
-		if(getValidBit()[slot] > 0) {
-			return true;
-		}
-		
-		return false;
-	}
-	
-	public boolean isDirty(int slot) {
-		
-		if(getDirtyBit()[slot] > 0) {
-			return true;
-		}
-		
-		return false;
-	}
-	
-	
 
-
+	
 	public void displayCache() {
 		
 		
@@ -88,6 +69,42 @@ public class CacheObject {
 	
 		
 	}
+	
+	public boolean isValid(int slot) {
+		
+		if(getValidBit()[slot] > 0) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	public boolean isDirty(int slot) {
+		
+		if(getDirtyBit()[slot] > 0) {
+			return true;
+		}
+		
+		return false;
+	}
+	
+	
+	public boolean equalsTag(int inputTag, int cacheTag) {
+		
+		if(inputTag==cacheTag) {
+			
+			return true;
+			
+		}
+		
+		return false;
+	}
+	
+	
+	
+
+
+
 	public void writeToFile(String fileName) throws IOException {
 		File file = new File(fileName);
 		
@@ -133,12 +150,30 @@ public class CacheObject {
 		this.validBit = validBit;
 	}
 	
+	public int getSlotValidBit(int slot) {
+		return validBit[slot];
+	}
+	
+	public void setSlotValidBit(int slot, short input) {
+		this.validBit[slot] = input;
+		
+	}
+	
 	public int[] getDirtyBit() {
 		return dirtyBit;
 	}
 
 	public void setDirtyBit(int[] dirtyBit) {
 		this.dirtyBit = dirtyBit;
+	}
+	
+	public int getSlotDirtyBit(int slot) {
+		return dirtyBit[slot];
+	}
+	
+	public void setSlotDirtyBit(int slot, short input) {
+		this.dirtyBit[slot] = input;
+		
 	}
 
 	public int[] getTagAddress() {
@@ -148,6 +183,15 @@ public class CacheObject {
 	public void setTagAddress(int[] tagAddress) {
 		this.tagAddress = tagAddress;
 	}
+	
+	public int getSlotTagAddress(int slot) {
+		return tagAddress[slot];
+	}
+	
+	public void setSlotTagAddress(int slot, short input) {
+		this.tagAddress[slot] = input;
+		
+	}
 
 	public short[][] getDataBlock() {
 		return dataBlock;
@@ -156,6 +200,15 @@ public class CacheObject {
 	public void setDataBlock(short[][] dataBlock) {
 		this.dataBlock = dataBlock;
 	}
+	
+	public int getDataBlock(int row, int column) {
+		return dataBlock[row][column];
+	}
+	
+	public void setDataBlock(int row, int column, short input) {
+		this.dataBlock[row][column] = input;
+		
+	}
 
 	public int[] getCacheSlot() {
 		return cacheSlot;
@@ -163,6 +216,15 @@ public class CacheObject {
 
 	public void setCacheSlot(int[] cacheSlot) {
 		this.cacheSlot = cacheSlot;
+	}
+	
+	public int getSlotCacheSlot(int slot) {
+		return cacheSlot[slot];
+	}
+	
+	public void setSlotcacheSlot(int slot, short input) {
+		this.cacheSlot[slot] = input;
+		
 	}
 
 
