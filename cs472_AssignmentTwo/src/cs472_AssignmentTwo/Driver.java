@@ -8,13 +8,7 @@ public class Driver {
 		
 		
 		Driver driver = new Driver();
-		
-		
-		
-		
-		
-		
-		
+	
 		driver.doIt();
 			
 	}
@@ -179,22 +173,7 @@ public class Driver {
 	    }
 		//cacheObject.displayCache();
 
-	    
-	    
-	    
-	   /* 
-    	
-    	
-    	
-    	
-    	
-
-
-;
-    	
-    	*/
-
-
+	  
 	    
 	    //instructions.printInstructions();
 	    
@@ -208,15 +187,7 @@ public class Driver {
 		
 		
 	}
-	
-	public void readCache() {
 
-		
-	}
-	
-	public void writeCache() {
-		
-	}
 	
 	
 	
